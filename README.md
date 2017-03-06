@@ -1,5 +1,5 @@
-# bbm487s2017g2
-## BBM487 Software Engineering Lab. - 2017 Spring - Group 2 - Library Book Loan System
+## BBM487 Software Engineering Lab. - 2017 Spring - Group 2
+## Library Book Loan System
 
 # Group Members
 Rahmi Berk ŞEFKATLİ - 21427402 - Project Manager, Development
