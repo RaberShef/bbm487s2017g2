@@ -6,7 +6,7 @@ Rahmi Berk ŞEFKATLİ - 21427402 - Project Manager, Development
 
 Özlem DEMİRTAŞ - 21327901 - Requirements, Test
 
-Umut ÖZTÜRK - 21328394 - Architecture, Change Management
+Umut ÖZTÜRK - 21328394 - Architecture, Database Management
 
 ## ACADEMIC INTEGRITY
 
