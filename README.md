@@ -1,12 +1,18 @@
-## BBM487 Software Engineering Lab. - 2017 Spring - Group 2
-## Library Book Loan System
+# BBM487 Software Engineering Lab. - 2017 Spring - Group 2
+# Library Book Loan System
 
-# Group Members
-Rahmi Berk ŞEFKATLİ - 21427402 - Project Manager, Development
+## Group Members and Roles
+### Rahmi Berk ŞEFKATLİ - 21427402
 
-Özlem DEMİRTAŞ - 21327901 - Requirements, Test
+Project Manager, Lead Software Developer, Requirements Engineer, Software Tester, Software Architect
 
-Umut ÖZTÜRK - 21328394 - Architecture, Database Management
+### Özlem DEMİRTAŞ - 21327901
+
+Lead Requirements Engineer, Lead Software Tester, Software Developer, Software Architect
+
+### Umut ÖZTÜRK - 21328394
+
+Lead Software Architect, Requirements Engineer, Software Tester, Software Developer
 
 ## ACADEMIC INTEGRITY
 
