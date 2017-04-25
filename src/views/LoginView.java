@@ -17,9 +17,6 @@ import java.awt.event.ActionEvent;
 
 public class LoginView extends Frame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JTextField txtUsername;
@@ -29,7 +26,6 @@ public class LoginView extends Frame{
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		UserController.initializeUsers();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -42,16 +38,10 @@ public class LoginView extends Frame{
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public LoginView() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame("Library Book Loan System");
 		frame.setBounds(100, 100, 500, 500);
@@ -60,26 +50,26 @@ public class LoginView extends Frame{
 		
 		txtUsername = new JTextField();
 		txtUsername.setToolTipText("");
-		txtUsername.setBounds(219, 253, 120, 20);
+		txtUsername.setBounds(219, 253, 173, 20);
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(1);
 		
 		pwdPasssword = new JPasswordField();
-		pwdPasssword.setBounds(219, 284, 120, 20);
+		pwdPasssword.setBounds(219, 284, 173, 20);
 		frame.getContentPane().add(pwdPasssword);
 		
 		JLabel lblUsername = new JLabel("Username :");
-		lblUsername.setBounds(142, 256, 75, 14);
+		lblUsername.setBounds(117, 256, 100, 14);
 		frame.getContentPane().add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password :");
-		lblPassword.setBounds(142, 287, 75, 14);
+		lblPassword.setBounds(117, 287, 100, 14);
 		frame.getContentPane().add(lblPassword);
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {	
+			public void actionPerformed(ActionEvent e) {
 				switch(UserController.login(txtUsername.getText(), pwdPasssword.getText())) {
 					case -1: 
 						JOptionPane.showMessageDialog(frame, "Username and password does not match");
@@ -96,10 +86,10 @@ public class LoginView extends Frame{
 						librarianFr.setVisible(true);
 						frame.dispose();
 						break;
-				}				
+				}			
 			}
 		});
-		btnLogin.setBounds(205, 315, 90, 23);
+		btnLogin.setBounds(108, 328, 120, 23);
 		frame.getContentPane().add(btnLogin);
 		
 		JLabel lblLibraryBookLoan = new JLabel("Library Book Loan System");
@@ -108,18 +98,23 @@ public class LoginView extends Frame{
 		frame.getContentPane().add(lblLibraryBookLoan);
 		
 		JButton btnSearchForBooks = new JButton("Search for books");
-		btnSearchForBooks.setEnabled(false);
-		btnSearchForBooks.setBounds(175, 380, 150, 50);
+		btnSearchForBooks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SearchForBooks searchBooks = new SearchForBooks();
+				JFrame searchBooksFr = searchBooks.getFrame();
+				searchBooksFr.setVisible(true);
+				frame.dispose();
+			}
+		});
+		btnSearchForBooks.setEnabled(true);
+		btnSearchForBooks.setBounds(238, 328, 154, 23);
 		frame.getContentPane().add(btnSearchForBooks);
 		
-		JLabel lblOr = new JLabel("OR");
-		lblOr.setBounds(242, 355, 24, 14);
-		frame.getContentPane().add(lblOr);
-		
-		JLabel lblNewLabel = new JLabel("New label");
+		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("resources/library.jpg"));
 		lblNewLabel.setBounds(117, 88, 261, 142);
 		frame.getContentPane().add(lblNewLabel);
+		frame.setResizable(false);
 	}
 	
 	public JFrame getFrame(){

@@ -1,6 +1,7 @@
 package models;
 
 public class UserModel {
+	private int id;
 	private String username;
 	private String password;
 	private String name;
@@ -8,14 +9,19 @@ public class UserModel {
     private String email;
     private boolean isLibrarian;
 
-    public UserModel(String username, String password, String name, String surname, String email, boolean isLibrarian) {
-        this.username = username;
+    public UserModel(int id, String username, String password, String name, String surname, String email, boolean isLibrarian) {
+        this.id = id;
+    	this.username = username;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.isLibrarian = isLibrarian;
     }
+    
+    public int getId() {
+		return id;
+	}
     
     public String getUsername() {
 		return username;
