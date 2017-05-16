@@ -18,7 +18,7 @@ public class BookModel {
     }
 	
 	public String toString(){
-		return name + ", " + author_name + ", " + barcode_no;
+		return name + ",  " + author_name + ",  " + barcode_no+", "+number_of_pages+" , "+printing_year;
 	}
 	
 	public int getBarcode_no() {

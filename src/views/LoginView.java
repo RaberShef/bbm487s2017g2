@@ -115,6 +115,9 @@ public class LoginView extends Frame{
 		lblNewLabel.setBounds(117, 88, 261, 142);
 		frame.getContentPane().add(lblNewLabel);
 		frame.setResizable(false);
+		
+		UserController.checkIfReservationExpired();
+		UserController.calculateFines();
 	}
 	
 	public JFrame getFrame(){

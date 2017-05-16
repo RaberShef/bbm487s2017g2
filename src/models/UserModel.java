@@ -70,4 +70,7 @@ public class UserModel {
 	public void setLibrarian(boolean isLibrarian) {
 		this.isLibrarian = isLibrarian;
 	}
+	public String toString(){
+		return name + ", " + surname  +", "+email;
+	}
 }

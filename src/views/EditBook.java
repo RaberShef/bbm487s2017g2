@@ -1,31 +1,58 @@
 package views;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class EditBook extends JFrame{
+import controllers.BookController;
+import models.BookModel;
 
-	private static final long serialVersionUID = 1L;
-	private JFrame frame;
+public class EditBook {
+
+	private JFrame frmEditBook;
 	private JTextField txtBookName;
-	private JLabel lblBookName; 
-	private JTextField txtAuthor;
-	private JLabel lblAuthor;
-	private JTextField txtBarcode;
-	private JLabel lblBarcode;
-	private JButton btnUpdateBook;
+	private JTextField txtAuthorName;
+	private JLabel lblAuthorName;
+	private JTextField txtCount;
+	private JLabel lblCount;
+	private JButton btnCreateNewUser;
 	private JButton btnBackToManipulate;
-	private JTextField txtPages;
-	private JTextField txtYear;
-	private JLabel lblNumberOfPages;
-	private JLabel lblPrintingYear;
-
+	private JTextField txtNumberOfPages;
+	private JTextField txtPrintingYear;
+	private BookModel selectedBookModel=null;
+	private JLabel label;
+	/**
+	 * Launch the application.
+	 
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					EditBook window = new EditBook();
+					window.frmEditBook.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+   */
 	/**
 	 * Create the application.
 	 */
-	public EditBook() {
+	public EditBook(BookModel selectedBookModel) {
+		this.selectedBookModel=selectedBookModel;
 		initialize();
 	}
 
@@ -33,81 +60,128 @@ public class EditBook extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("Edit Book");
-		frame.setBounds(100, 100, 500, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmEditBook = new JFrame("Edit Book");
+		frmEditBook.setBounds(100, 100, 500, 500);
+		frmEditBook.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmEditBook.getContentPane().setLayout(null);
 		
 		txtBookName = new JTextField();
-		txtBookName.setText("Silmarillion");
+		txtBookName.setText(selectedBookModel.getName());
 		txtBookName.setToolTipText("");
-		txtBookName.setBounds(222, 166, 120, 20);
-		frame.getContentPane().add(txtBookName);
+		txtBookName.setBounds(222, 166, 134, 20);
+		frmEditBook.getContentPane().add(txtBookName);
 		txtBookName.setColumns(1);
 		
-		lblBookName = new JLabel("Name :");
+		JLabel lblBookName = new JLabel("Name :");
 		lblBookName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblBookName.setBounds(137, 169, 75, 14);
-		frame.getContentPane().add(lblBookName);
+		frmEditBook.getContentPane().add(lblBookName);
 		
-		txtAuthor = new JTextField();
-		txtAuthor.setText("J.R.R. Tolkien");
-		txtAuthor.setToolTipText("");
-		txtAuthor.setColumns(1);
-		txtAuthor.setBounds(222, 190, 120, 20);
-		frame.getContentPane().add(txtAuthor);
+		txtAuthorName = new JTextField();
+		txtAuthorName.setText(selectedBookModel.getAuthor_name());
+		txtAuthorName.setToolTipText("");
+		txtAuthorName.setColumns(1);
+		txtAuthorName.setBounds(222, 190, 134, 20);
+		frmEditBook.getContentPane().add(txtAuthorName);
 		
-		lblAuthor = new JLabel("Author :");
-		lblAuthor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAuthor.setBounds(157, 193, 55, 14);
-		frame.getContentPane().add(lblAuthor);
+		lblAuthorName = new JLabel("Author :");
+		lblAuthorName.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAuthorName.setBounds(157, 193, 55, 14);
+		frmEditBook.getContentPane().add(lblAuthorName);
 		
-		txtBarcode = new JTextField();
-		txtBarcode.setText("1231565");
-		txtBarcode.setToolTipText("");
-		txtBarcode.setColumns(1);
-		txtBarcode.setBounds(222, 214, 120, 20);
-		frame.getContentPane().add(txtBarcode);
+		txtCount = new JTextField();
+		txtCount.setText(selectedBookModel.getCount()+"");
+		txtCount.setToolTipText("");
+		txtCount.setColumns(1);
+		txtCount.setBounds(222, 214, 134, 20);
+		frmEditBook.getContentPane().add(txtCount);
 		
-		lblBarcode = new JLabel("Barcode :");
-		lblBarcode.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblBarcode.setBounds(148, 217, 64, 14);
-		frame.getContentPane().add(lblBarcode);
+		lblCount = new JLabel("Count :");
+		lblCount.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCount.setBounds(148, 217, 64, 14);
+		frmEditBook.getContentPane().add(lblCount);
 		
-		btnUpdateBook = new JButton("Update book");
-		btnUpdateBook.setBounds(92, 323, 301, 53);
-		frame.getContentPane().add(btnUpdateBook);
+		
 		
 		btnBackToManipulate = new JButton("Back to manipulate books");
+		btnBackToManipulate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ManipulateBooks manipulateBooks=new ManipulateBooks();
+				JFrame frameManipulateBook=manipulateBooks.getFrame();
+				frameManipulateBook.setVisible(true);
+				frmEditBook.dispose();
+				
+			}
+		});
 		btnBackToManipulate.setBounds(286, 11, 188, 23);
-		frame.getContentPane().add(btnBackToManipulate);
+		frmEditBook.getContentPane().add(btnBackToManipulate);
 		
-		lblNumberOfPages = new JLabel("Number of pages :");
+		JLabel lblNumberOfPages = new JLabel("Number of pages :");
 		lblNumberOfPages.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumberOfPages.setBounds(108, 240, 104, 14);
-		frame.getContentPane().add(lblNumberOfPages);
+		frmEditBook.getContentPane().add(lblNumberOfPages);
 		
-		txtPages = new JTextField();
-		txtPages.setToolTipText("");
-		txtPages.setText("500");
-		txtPages.setColumns(1);
-		txtPages.setBounds(222, 237, 120, 20);
-		frame.getContentPane().add(txtPages);
+		txtNumberOfPages = new JTextField();
+		txtNumberOfPages.setToolTipText("");
+		txtNumberOfPages.setText(selectedBookModel.getNumber_of_pages()+"");
+		txtNumberOfPages.setColumns(1);
+		txtNumberOfPages.setBounds(222, 237, 134, 20);
+		frmEditBook.getContentPane().add(txtNumberOfPages);
 		
-		lblPrintingYear = new JLabel("Printing year :");
+		JLabel lblPrintingYear = new JLabel("Printing year :");
 		lblPrintingYear.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPrintingYear.setBounds(118, 265, 94, 14);
-		frame.getContentPane().add(lblPrintingYear);
+		frmEditBook.getContentPane().add(lblPrintingYear);
 		
-		txtYear = new JTextField();
-		txtYear.setToolTipText("");
-		txtYear.setText("2000");
-		txtYear.setColumns(1);
-		txtYear.setBounds(222, 262, 120, 20);
-		frame.getContentPane().add(txtYear);
+		txtPrintingYear = new JTextField();
+		txtPrintingYear.setToolTipText("");
+		txtPrintingYear.setText(selectedBookModel.getPrinting_year()+"");
+		txtPrintingYear.setColumns(1);
+		txtPrintingYear.setBounds(222, 262, 134, 20);
+		frmEditBook.getContentPane().add(txtPrintingYear);
+		
+		
+		btnCreateNewUser = new JButton("Update book");
+		btnCreateNewUser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			 if((txtAuthorName.getText()!=null && txtAuthorName.getText().trim().length()>0)&&(txtBookName.getText()!=null&&txtBookName.getText().trim().length()>0)
+			   && (txtCount.getText()!=null&&txtCount.getText().trim().length()>0)&&(txtNumberOfPages.getText()!=null&&txtNumberOfPages.getText().trim().length()>0)&&(txtPrintingYear.getText()!=null&&txtPrintingYear.getText().trim().length()>0)){
+				 
+				 selectedBookModel.setAuthor_name(txtAuthorName.getText());
+				 selectedBookModel.setName(txtBookName.getText());
+				 selectedBookModel.setCount(Integer.parseInt(txtCount.getText()));
+				 selectedBookModel.setNumber_of_pages(Integer.parseInt(txtNumberOfPages.getText()));
+				 selectedBookModel.setPrinting_year(Integer.parseInt(txtPrintingYear.getText()));
+				 BookController.updateBook(selectedBookModel);
+				 
+				 ManipulateBooks manipulateBooks=new ManipulateBooks();
+			     JFrame manipulateBooksForFrame=manipulateBooks.getFrame();
+			     manipulateBooksForFrame.setVisible(true);
+				 frmEditBook.dispose();
+			 }
+				
+			}
+		});
+		btnCreateNewUser.setBounds(222, 289, 134, 31);
+		frmEditBook.getContentPane().add(btnCreateNewUser);
+		
+		BufferedImage myPicture=null;
+		try {
+			myPicture = ImageIO.read(new File("resources/update.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		label = new JLabel(new ImageIcon(myPicture));
+		label.setBounds(108, 45, 290, 110);
+		frmEditBook.getContentPane().add(label);
 	}
-	
-	public JFrame getFrame(){
-		return frame;
+	public JFrame getFrame() {
+		return frmEditBook;
 	}
 }

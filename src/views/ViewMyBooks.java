@@ -38,12 +38,12 @@ public class ViewMyBooks extends JFrame {
 
 	private void initialize() {
 		frame = new JFrame("View My Books");
-		frame.setBounds(100, 100, 542, 500);
+		frame.setBounds(100, 100, 639, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
-		textField.setBounds(290, 45, 216, 20);
+		textField.setBounds(290, 45, 200, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
@@ -57,7 +57,7 @@ public class ViewMyBooks extends JFrame {
 		frame.getContentPane().add(comboBox);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(41, 77, 231, 337);
+		scrollPane.setBounds(41, 120, 371, 294);
 		frame.getContentPane().add(scrollPane);	
 				
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -73,11 +73,11 @@ public class ViewMyBooks extends JFrame {
 				frame.dispose();
 			}
 		});
-		btnBackToMain.setBounds(356, 11, 152, 23);
+		btnBackToMain.setBounds(469, 11, 152, 23);
 		frame.getContentPane().add(btnBackToMain);
 				
 		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(355, 75, 153, 23);
+		btnSearch.setBounds(500, 44, 121, 23);
 		frame.getContentPane().add(btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,15 +91,18 @@ public class ViewMyBooks extends JFrame {
 				if(selectedBook==null){
 					return;
 				}
+				if(UserController.checkIfFined(selectedBook)){
+					JOptionPane.showMessageDialog(frame, "You have to pay the fine for this book before returning it.");
+					return;
+				}
 				UserController.returnBook(selectedBook);
 				JOptionPane.showMessageDialog(frame, "Book returned successfully.");
 				//DefaultListModel listModel=new DefaultListModel();
 				//list.setModel(listModel);
-				UserController.getLoanedBooksByCondition(" "," ", list);	
-			    
+				UserController.getLoanedBooksByCondition(" "," ", list);
 			}
 		});
-		btnSelfReturn.setBounds(333, 337, 173, 43);
+		btnSelfReturn.setBounds(436, 343, 173, 43);
 		frame.getContentPane().add(btnSelfReturn);
 		
 		BufferedImage myPicture=null;
@@ -111,8 +114,12 @@ public class ViewMyBooks extends JFrame {
 		}
 		
 		JLabel panel = new JLabel(new ImageIcon(myPicture));
-		panel.setBounds(290, 137, 236, 189);
+		panel.setBounds(422, 134, 201, 189);
 		frame.getContentPane().add(panel);
+		
+		JLabel lblName = new JLabel("Name, Author name, Barcode, Page number, Printing year");
+		lblName.setBounds(42, 95, 370, 14);
+		frame.getContentPane().add(lblName);
 		
 		list.addListSelectionListener(new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent event) {

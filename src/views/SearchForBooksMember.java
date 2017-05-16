@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -23,7 +24,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import controllers.BookController;
+import controllers.UserController;
 import models.BookModel;
+import models.UserModel;
+
 import javax.swing.JPanel;
 
 public class SearchForBooksMember extends JFrame {
@@ -40,7 +44,7 @@ public class SearchForBooksMember extends JFrame {
 
 	private void initialize() {
 		frame = new JFrame("Search for books");
-		frame.setBounds(100, 100, 500, 500);
+		frame.setBounds(100, 100, 631, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -67,7 +71,7 @@ public class SearchForBooksMember extends JFrame {
 				frame.dispose();
 			}
 		});
-		btnBackToLogin.setBounds(336, 11, 148, 23);
+		btnBackToLogin.setBounds(465, 11, 150, 23);
 		frame.getContentPane().add(btnBackToLogin);
 				
 		JButton btnSearch = new JButton("Search");
@@ -79,11 +83,11 @@ public class SearchForBooksMember extends JFrame {
 			}
 		});
 		
-		btnSearch.setBounds(336, 75, 121, 23);
+		btnSearch.setBounds(488, 44, 127, 23);
 		frame.getContentPane().add(btnSearch);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(41, 77, 231, 337);
+		scrollPane.setBounds(41, 102, 386, 312);
 		frame.getContentPane().add(scrollPane);	
 		
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -97,26 +101,52 @@ public class SearchForBooksMember extends JFrame {
 				if(selectedBook == null){
 					return;
 				}
+				if(UserController.numberOfCurrentlyLoaned() >= 3){
+					JOptionPane.showMessageDialog(frame, "You can loan at most three books at a time");
+					return;
+				}
 				SelfCheckout selfCheckout = new SelfCheckout(selectedBook);
 				JFrame selfCheckoutFr = selfCheckout.getFrame();
 				selfCheckoutFr.setVisible(true);
 				frame.dispose();
 			}
 		});
-		btnSelfcheckout.setBounds(301, 378, 173, 36);
+		btnSelfcheckout.setBounds(442, 378, 173, 36);
 		frame.getContentPane().add(btnSelfcheckout);
 		
 		JButton btnAddNameTo = new JButton("Add name to waiting list");
-		btnAddNameTo.setBounds(301, 331, 173, 36);
+		btnAddNameTo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+	          if(selectedBook==null){
+	        	  return;
+	          }
+	          
+	          boolean control = UserController.addToWaitingList(selectedBook.getBarcode_no());
+	          if(control){
+	        	  JOptionPane.showMessageDialog(frame, "The book named " + selectedBook.getName() + " has been successfully added to the waiting list");
+	          }
+	          else {
+	        	  JOptionPane.showMessageDialog(frame, "The book named " + selectedBook.getName() + " cannot be added to the waiting list");
+	          }
+			}
+		});
+		btnAddNameTo.setBounds(442, 331, 173, 36);
 		frame.getContentPane().add(btnAddNameTo);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setWrapStyleWord(true);
 		textArea.setBackground(UIManager.getColor("Button.background"));
 		textArea.setLineWrap(true);
-		textArea.setBounds(301, 213, 173, 107);
+		textArea.setBounds(437, 191, 173, 107);
 		frame.getContentPane().add(textArea);
 		
+		JLabel lblName = new JLabel("Name, Author name, Barcode, Page number, Printing year");
+		lblName.setBounds(41, 77, 386, 14);
+		frame.getContentPane().add(lblName);
+		
+		BufferedImage myPicture=null;
 		try {
 			myPicture = ImageIO.read(new File("resources/search.png"));
 		} catch (IOException e1) {
@@ -135,16 +165,37 @@ public class SearchForBooksMember extends JFrame {
 		            	return;
 		            }
 		            isInStock = BookController.checkStock(selectedBook);
-		            if(isInStock){
+		            boolean isWaited = UserController.checkIfWaited(selectedBook.getBarcode_no());
+		            boolean isTheOneWaiting = UserController.checkIfFirstInWList(selectedBook.getBarcode_no());
+		            boolean isFined = UserController.checkIfFined();
+		            if(isFined){
+		            	textArea.setText("You haven't paid your fine yet. You can't loan or queue for a book until you have paid it.");
+		            	btnAddNameTo.setEnabled(false);
+		            	btnSelfcheckout.setEnabled(false);
+		            }
+		            else if(isInStock && !isWaited){
 		            	textArea.setText("Chosen book is available, you may proceed to checkout.");
 		            	btnAddNameTo.setEnabled(false);
 		            	btnSelfcheckout.setEnabled(true);
 		            }
-		            else{
-		            	textArea.setText("Chosen book is currently loaned to someone else, you may add your name to waiting list.");
+		            else if(isInStock && isWaited){
+		            	if(isTheOneWaiting){
+		            		textArea.setText("Chosen book is in stock and you are first in the waiting list. You may proceed to checkout.");
+			            	btnAddNameTo.setEnabled(false);
+			            	btnSelfcheckout.setEnabled(true);
+		            	}
+		            	else{
+		            		textArea.setText("Chosen book is in stock but there are people in waiting list to loan it, you may add your name to waiting list.");
+			            	btnAddNameTo.setEnabled(true);
+			            	btnSelfcheckout.setEnabled(false);
+		            	}
+		            }
+		            else if(!isInStock){
+		            	textArea.setText("Chosen book is not in stock, you may add your name to waiting list.");
 		            	btnAddNameTo.setEnabled(true);
 		            	btnSelfcheckout.setEnabled(false);
 		            }
+		            
 		        }
 		    }
 		});

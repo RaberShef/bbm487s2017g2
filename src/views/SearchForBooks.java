@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -25,15 +26,14 @@ public class SearchForBooks extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JTextField textField;
-	private JList<BookModel> list = new JList<BookModel>();;
-
+    private JList<BookModel> list = new JList<BookModel>();
 	public SearchForBooks() {
 		initialize();
 	}
 	
 	private void initialize() {
 		frame = new JFrame("Search for books without login");
-		frame.setBounds(100, 100, 532, 500);
+		frame.setBounds(100, 100, 646, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -60,7 +60,7 @@ public class SearchForBooks extends JFrame {
 				frame.dispose();
 			}
 		});
-		btnBackToLogin.setBounds(350, 11, 152, 23);
+		btnBackToLogin.setBounds(478, 11, 152, 23);
 		frame.getContentPane().add(btnBackToLogin);
 			
 		JButton btnSearch = new JButton("Search");
@@ -71,11 +71,11 @@ public class SearchForBooks extends JFrame {
 				BookController.getBookByCondition(condition,value, list);
 			}
 		});
-		btnSearch.setBounds(325, 75, 152, 23);
+		btnSearch.setBounds(506, 44, 124, 23);
 		frame.getContentPane().add(btnSearch);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(41, 77, 231, 337);
+		scrollPane.setBounds(10, 111, 392, 303);
 		frame.getContentPane().add(scrollPane);
 		
 		/*JLabel bookName = new JLabel("");
@@ -94,8 +94,12 @@ public class SearchForBooks extends JFrame {
 		}
 		
 		JLabel panel = new JLabel(new ImageIcon(myPicture));
-		panel.setBounds(290, 149, 226, 250);
+		panel.setBounds(410, 144, 220, 250);
 		frame.getContentPane().add(panel);
+		
+		JLabel lblName = new JLabel("Name, Author name, Barcode, Page number, Printing year");
+		lblName.setBounds(10, 86, 392, 14);
+		frame.getContentPane().add(lblName);
 		frame.setResizable(false);
 		
 	}

@@ -49,15 +49,32 @@ public class MainMenuLibrarianView extends Frame {
 		JButton btnSearchForBooks = new JButton("Manipulate Books");
 		btnSearchForBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManipulateBooks manipulateBooks=new ManipulateBooks();
+				JFrame frameBook=manipulateBooks.getFrame();
+				frameBook.setVisible(true);
+				frame.dispose();
 			}
 		});
 		btnSearchForBooks.setBounds(91, 386, 208, 50);
-		btnSearchForBooks.setEnabled(false);
+		//btnSearchForBooks.setEnabled(false);
 		frame.getContentPane().add(btnSearchForBooks);
 		
 		JButton btnViewMyBooks = new JButton("Manipulate Members");
+		btnViewMyBooks.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ManipulateMembers manipulateMembers=new ManipulateMembers();
+				
+				 JFrame frameMember=manipulateMembers.getFrame();
+				 frameMember.setVisible(true);
+				 frame.dispose();
+		
+			}
+		});
+		
 		btnViewMyBooks.setBounds(350, 386, 210, 50);
-		btnViewMyBooks.setEnabled(false);
+		//btnViewMyBooks.setEnabled(false);
 		frame.getContentPane().add(btnViewMyBooks);
 		
 		JLabel lblWelcomeMember = new JLabel("Welcome, Librarian "+ UserController.getUserModel().getName());

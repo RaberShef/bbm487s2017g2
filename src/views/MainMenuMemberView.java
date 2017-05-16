@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import controllers.UserController;
 
@@ -15,8 +16,15 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 
 public class MainMenuMemberView extends Frame{
 
@@ -25,6 +33,7 @@ public class MainMenuMemberView extends Frame{
 
 	public MainMenuMemberView() {
 		initialize();
+		
 	}
 
 	private void initialize() {
@@ -73,7 +82,16 @@ public class MainMenuMemberView extends Frame{
 		
 		JButton btnPayFine = new JButton("Pay Fine");
 		btnPayFine.setBounds(394, 125, 141, 30);
-		btnPayFine.setEnabled(false);
+		btnPayFine.setEnabled(true);
+		btnPayFine.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PayFineView payFineView = new PayFineView();
+				JFrame payFineFr = payFineView.getFrame();
+				payFineFr.setVisible(true);
+				frame.dispose();
+			}
+		});
 		frame.getContentPane().add(btnPayFine);
 		
 		JLabel lblWelcomeMember = new JLabel("Welcome, Member "+ UserController.getUserModel().getName());
@@ -94,6 +112,32 @@ public class MainMenuMemberView extends Frame{
 
 		Paintpanel.setBounds(59, 197, 462, 208);
 		frame.getContentPane().add(Paintpanel);
+		
+		JTextArea txtNotification = new JTextArea();
+		txtNotification.setWrapStyleWord(true);
+		txtNotification.setBackground(SystemColor.control);
+		txtNotification.setLineWrap(true);
+		txtNotification.setEditable(false);
+		txtNotification.setBounds(48, 416, 462, 44);
+		JScrollPane scroll = new JScrollPane(txtNotification);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		ArrayList<String> notifiedList = UserController.notifyWaiting();
+		if(notifiedList.size() > 0){
+			String notification = notifiedList.get(0);
+			for (int i = 1; i < notifiedList.size(); i++) {
+				notification = String.join(", ", notification, notifiedList.get(i));
+			}
+			if(notifiedList.size() > 1){
+				txtNotification.setText(notification + "are now available and they are reserved for you.");
+			}
+			else if (notifiedList.size() == 1){
+				txtNotification.setText(notification + " is now available and it is reserved for you.");
+			}
+		}
+		
+		frame.getContentPane().add(txtNotification);
+		frame.getContentPane().add(scroll);
+		
 		frame.setResizable(false);
 	}
 
